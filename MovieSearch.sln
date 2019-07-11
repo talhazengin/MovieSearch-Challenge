@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieSearch", "MovieSearch\MovieSearch.csproj", "{DB3C5457-AD10-4BB1-A4A0-4F9022D86FC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieSearch.Data", "MovieSearch.Data\MovieSearch.Data.csproj", "{62D324F7-80B0-403C-8E26-AD2EEA6C7530}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB3C5457-AD10-4BB1-A4A0-4F9022D86FC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB3C5457-AD10-4BB1-A4A0-4F9022D86FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB3C5457-AD10-4BB1-A4A0-4F9022D86FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB3C5457-AD10-4BB1-A4A0-4F9022D86FC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62D324F7-80B0-403C-8E26-AD2EEA6C7530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62D324F7-80B0-403C-8E26-AD2EEA6C7530}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D324F7-80B0-403C-8E26-AD2EEA6C7530}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62D324F7-80B0-403C-8E26-AD2EEA6C7530}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9F53531-1309-43BF-B7DF-A59828F4ABC5}
+	EndGlobalSection
+EndGlobal
