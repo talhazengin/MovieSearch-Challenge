@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MovieSearch.Controllers
 {
-    [Route("[controller]")]
+    [Route("moviesearch/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {

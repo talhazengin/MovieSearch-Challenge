@@ -1,8 +1,8 @@
-﻿using MovieSearch.Data.Models;
+﻿using MovieSearch.Data.Models.User;
 
 namespace MovieSearch.Services
 {
-    public interface IUserService
+    public interface IUserAuthService
     {
         User Authenticate(string username, string password);
     }

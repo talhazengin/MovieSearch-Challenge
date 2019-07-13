@@ -2,11 +2,11 @@
 
 namespace MovieSearch.Data.DAL
 {
-    public class DbTransaction : ITransaction
+    public class Transaction : ITransaction
     {
         private readonly IDbContextTransaction _efTransaction;
 
-        public DbTransaction(IDbContextTransaction efTransaction)
+        public Transaction(IDbContextTransaction efTransaction)
         {
             _efTransaction = efTransaction;
         }

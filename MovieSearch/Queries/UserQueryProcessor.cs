@@ -2,6 +2,7 @@
 using System.Linq;
 using MovieSearch.Data.DAL;
 using MovieSearch.Data.Models;
+using MovieSearch.Data.Models.User;
 
 namespace MovieSearch.Queries
 {

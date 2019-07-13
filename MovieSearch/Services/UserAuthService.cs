@@ -5,17 +5,18 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using MovieSearch.Data.Models;
+using MovieSearch.Data.Models.User;
 using MovieSearch.Queries;
 
 namespace MovieSearch.Services
 {
-    public class UserService : IUserService
+    public class UserAuthService : IUserAuthService
     {
         private const string JWTSecretKey = "t*a-l=h+a";
 
         private readonly IUserQueryProcessor _userQueryProcessor;
 
-        public UserService(IUserQueryProcessor userQueryProcessor)
+        public UserAuthService(IUserQueryProcessor userQueryProcessor)
         {
             _userQueryProcessor = userQueryProcessor;
         }

@@ -1,22 +1,22 @@
-﻿using System.Data;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace MovieSearch.Data.DAL
 {
-    public class EFUnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
-        public EFUnitOfWork(MovieSearchDbContext context)
+        public UnitOfWork(MovieSearchDbContext context)
         {
             Context = context;
         }
 
         public MovieSearchDbContext Context { get; private set; }
 
-        public ITransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.Snapshot)
+        public IQueryable<T> Query<T>()
+            where T : class
         {
-            return new DbTransaction(Context.Database.BeginTransaction(isolationLevel));
+            return Context.Set<T>();
         }
 
         public void Add<T>(T obj)
@@ -40,10 +40,15 @@ namespace MovieSearch.Data.DAL
             set.Remove(obj);
         }
 
-        public IQueryable<T> Query<T>()
-            where T : class
+        public void Attach<T>(T newUser) where T : class
         {
-            return Context.Set<T>();
+            DbSet<T> set = Context.Set<T>();
+            set.Attach(newUser);
+        }
+
+        public ITransaction BeginTransaction()
+        {
+            return new Transaction(Context.Database.BeginTransaction());
         }
 
         public void Commit()
@@ -54,12 +59,6 @@ namespace MovieSearch.Data.DAL
         public async Task CommitAsync()
         {
             await Context.SaveChangesAsync();
-        }
-
-        public void Attach<T>(T newUser) where T : class
-        {
-            DbSet<T> set = Context.Set<T>();
-            set.Attach(newUser);
         }
 
         public void Dispose()

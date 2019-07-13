@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,7 +6,7 @@ namespace MovieSearch.Data.DAL
 {
     public interface IUnitOfWork : IDisposable
     {
-        ITransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.Snapshot);
+        IQueryable<T> Query<T>() where T : class;
 
         void Add<T>(T obj) where T : class;
 
@@ -15,12 +14,12 @@ namespace MovieSearch.Data.DAL
 
         void Remove<T>(T obj) where T : class;
 
-        IQueryable<T> Query<T>() where T : class;
+        void Attach<T>(T obj) where T : class;
+
+        ITransaction BeginTransaction();
 
         void Commit();
 
         Task CommitAsync();
-
-        void Attach<T>(T obj) where T : class;
     }
 }

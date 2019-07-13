@@ -7,6 +7,7 @@ using System.Security.Policy;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using MovieSearch.Data.Models;
+using MovieSearch.Data.Models.Movie;
 
 namespace MovieSearch.Services
 {
