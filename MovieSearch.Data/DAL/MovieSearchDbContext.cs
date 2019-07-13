@@ -23,10 +23,10 @@ namespace MovieSearch.Data.DAL
 
         private static IEnumerable<IMap> GetMappings()
         {
-            IEnumerable<TypeInfo> assemblyTypes = typeof(UserMap).GetTypeInfo().Assembly.DefinedTypes;
+            IEnumerable<TypeInfo> assemblyTypes = typeof(UserMap).Assembly.DefinedTypes;
 
             IEnumerable<TypeInfo> mappings = assemblyTypes
-                .Where(typeInfo => typeof(IMap).GetTypeInfo().IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract);
+                .Where(typeInfo => typeof(IMap).IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract);
 
             return mappings.Select(mapping => (IMap)Activator.CreateInstance(mapping.AsType()));
         }

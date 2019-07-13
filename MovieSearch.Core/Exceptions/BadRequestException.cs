@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MovieSearch.Exceptions
+namespace MovieSearch.Core.Exceptions
 {
     public class BadRequestException : Exception
     {

@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MovieSearch.Core\MovieSearch.Core.csproj" />
     <ProjectReference Include="..\MovieSearch.Data\MovieSearch.Data.csproj" />
   </ItemGroup>
 

@@ -33,7 +33,7 @@ namespace MovieSearch
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddMvc(options => options.Filters.Add(new MovieSearchExceptionFilter()))
+                .AddMvc(options => options.Filters.Add(new CommonExceptionFilter()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options =>
                 {

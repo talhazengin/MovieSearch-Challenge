@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using MovieSearch.Exceptions;
+using MovieSearch.Core.Exceptions;
 
 namespace MovieSearch.Filters
 {
-    public class MovieSearchExceptionFilter : ExceptionFilterAttribute
+    public class CommonExceptionFilter : ExceptionFilterAttribute
     {
         public override void OnException(ExceptionContext context)
         {
@@ -21,7 +20,7 @@ namespace MovieSearch.Filters
                     context.Result = new BadRequestObjectResult(badRequestException.Message);
                     break;
 
-                case UnauthorizedAccessException _:
+                case UnauthorizedException _:
                     context.ExceptionHandled = true;
                     context.Result = new UnauthorizedObjectResult(context.Exception.Message);
                     break;

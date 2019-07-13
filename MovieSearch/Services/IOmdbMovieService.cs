@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using MovieSearch.Data.Models;
 using MovieSearch.Data.Models.Movie;
 
 namespace MovieSearch.Services

@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MovieSearch.Core.Services;
 using MovieSearch.Data.Models.User;
+using MovieSearch.Data.QueryProcessors;
+using MovieSearch.Filters;
 using MovieSearch.Services;
 
 namespace MovieSearch.Controllers
@@ -11,31 +15,33 @@ namespace MovieSearch.Controllers
     public class UserController : Controller
     {
         private readonly IUserAuthService _userAuthService;
+        private readonly IUserQueryProcessor _userQueryProcessor;
 
-        public UserController(IUserAuthService userAuthService)
+        public UserController(IUserAuthService userAuthService, IUserQueryProcessor userQueryProcessor)
         {
             _userAuthService = userAuthService;
+            _userQueryProcessor = userQueryProcessor;
+        }
+
+        [HttpPost("create")]
+        [ValidateModel]
+        public async Task CreateUser([FromBody]UserModel userModel)
+        {
+            await _userQueryProcessor.CreateUser(userModel);
         }
 
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]User userParam)
+        [ValidateModel]
+        public IActionResult AuthenticateUser([FromBody]UserModel userModel)
         {
-            User user = _userAuthService.Authenticate(userParam.Username, userParam.Password);
+            string token = _userAuthService.AuthenticateUser(userModel.Username, userModel.Password);
 
-            if (user == null)
+            if (token == null)
             {
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new { message = "Username or password is incorrect!" });
             }
 
-            return Ok(user);
-        }
-
-        [HttpGet("authenticate")]
-        public IActionResult GetAUser()
-        {
-            var user = new User { Username = "MyUser" };
-
-            return Ok(user);
+            return Ok(token);
         }
     }
 }

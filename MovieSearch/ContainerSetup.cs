@@ -4,8 +4,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MovieSearch.Core.Services;
 using MovieSearch.Data.DAL;
-using MovieSearch.Queries;
+using MovieSearch.Data.QueryProcessors;
 using MovieSearch.Services;
 
 namespace MovieSearch
@@ -22,9 +23,7 @@ namespace MovieSearch
         {
             // We are using in memory database for this demo project.
             services.AddDbContext<MovieSearchDbContext>(builder => builder.UseInMemoryDatabase("InMemoryDb"));
-
             services.AddScoped<IUnitOfWork>(provider => new UnitOfWork(provider.GetRequiredService<MovieSearchDbContext>()));
-
             services.AddScoped<IUserAuthService, UserAuthService>();
         }
 
@@ -32,16 +31,15 @@ namespace MovieSearch
         {
             Type exampleProcessorType = typeof(UserQueryProcessor);
 
-            Type[] types = (from t in exampleProcessorType.GetTypeInfo().Assembly.GetTypes()
-                where t.Namespace == exampleProcessorType.Namespace
-                      && t.GetTypeInfo().IsClass
-                      && t.GetTypeInfo().GetCustomAttribute<CompilerGeneratedAttribute>() == null
-                select t).ToArray();
+            Type[] processorTypes = (from t in exampleProcessorType.GetTypeInfo().Assembly.GetTypes()
+                                     where t.Namespace == exampleProcessorType.Namespace && t.IsClass && !t.IsAbstract
+                                           && t.GetCustomAttribute<CompilerGeneratedAttribute>() == null
+                                     select t).ToArray();
 
-            foreach (Type type in types)
+            foreach (Type processorType in processorTypes)
             {
-                Type interfaceQ = type.GetTypeInfo().GetInterfaces().First();
-                services.AddScoped(interfaceQ, type);
+                Type interfaceQ = processorType.GetInterfaces().First();
+                services.AddScoped(interfaceQ, processorType);
             }
         }
     }

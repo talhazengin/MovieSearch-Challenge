@@ -2,7 +2,7 @@
 
 namespace MovieSearch.Data.Models.User
 {
-    public class UserCreateModel
+    public class UserModel
     {
         [Required]
         public string Username { get; set; }
