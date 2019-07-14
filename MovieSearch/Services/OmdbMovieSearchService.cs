@@ -38,7 +38,7 @@ namespace MovieSearch.Services
 
             var movieInfoModel = new MovieInfoModel
             {
-                ImdbId = json["ImdbId"].Value<string>(),
+                ImdbId = json["imdbID"].Value<string>(),
                 Title = title,
                 MovieInfoJson = responseMessage
             };

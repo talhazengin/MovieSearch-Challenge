@@ -25,7 +25,7 @@ namespace MovieSearch
             services.AddDbContext<MovieSearchDbContext>(builder => builder.UseInMemoryDatabase("InMemoryDb"));
             services.AddScoped<IUnitOfWork>(provider => new UnitOfWork(provider.GetRequiredService<MovieSearchDbContext>()));
             services.AddScoped<IUserAuthService, UserAuthService>();
-            services.AddSingleton<IOmdbMovieSearchService, OmdbMovieSearchService>();
+            services.AddScoped<IOmdbMovieSearchService, OmdbMovieSearchService>();
         }
 
         private static void AddQueryProcessors(IServiceCollection services)
