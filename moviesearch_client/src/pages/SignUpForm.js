@@ -28,6 +28,25 @@ class SignUpForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
+        fetch('http://localhost:5000/user/create', {
+          method: 'POST',
+          mode: 'cors', // defaults to same-origin
+          headers: {
+            'Content-Type': 'application/json',
+            'content-length': '50',
+            'Accept': '*/*'
+          },
+          body: JSON.stringify({
+            Username: this.state.username,
+            Password: this.state.password
+          })}).then(res => {
+            if (res.ok) {
+              alert('Succesfully signed up..')
+            }else{
+              alert('Failed to signed up!')
+            }
+          }).catch(error => alert('Failed to signed up!'));
+
         console.log('The form was submitted with the following data:');
         console.log(this.state);
     }

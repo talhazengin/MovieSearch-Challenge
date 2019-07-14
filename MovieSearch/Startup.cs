@@ -33,6 +33,7 @@ namespace MovieSearch
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddCors()
                 .AddMvc(options => options.Filters.Add(new CommonExceptionFilter()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options =>
@@ -53,12 +54,10 @@ namespace MovieSearch
         public void Configure(IApplicationBuilder app)
         {
             app.UseHsts()
+                .UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
                 .UseAuthentication()
                 .UseMvc();
-
-            // app.UseHttpsRedirection();
-            // app.UseEndpointRouting();
-
+                
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
