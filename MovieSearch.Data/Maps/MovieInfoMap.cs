@@ -3,13 +3,13 @@ using MovieSearch.Data.Models.Movie;
 
 namespace MovieSearch.Data.Maps
 {
-    public class MovieMap : IMap
+    public class MovieInfoMap : IMap
     {
         public void Visit(ModelBuilder builder)
         {
-            builder.Entity<Movie>()
-                .ToTable("Movie")
-                .HasKey(movie => movie.Id);
+            builder.Entity<MovieInfo>()
+                .ToTable("MovieInfo")
+                .HasKey(movieInfo => movieInfo.Id);
         }
     }
 }

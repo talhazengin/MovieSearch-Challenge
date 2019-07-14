@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using MovieSearch.Filters;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
@@ -42,7 +42,8 @@ namespace MovieSearch
                 });
 
             // Register the Swagger generator, defining one or more Swagger documents
-            services.AddSwaggerGen(options => options.SwaggerDoc("v1", new Info { Title = "MovieSearch", Version = "V1"}));
+            services.AddSwaggerGen(options => 
+                options.SwaggerDoc("moviesearch", new Info { Title = "Movie Search", Version = "v1" }));
 
             // Configure other custom services.
             ContainerSetup.Setup(services);
@@ -51,17 +52,19 @@ namespace MovieSearch
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
-            app.UseHsts();
-            app.UseMvc();
+            app.UseHsts()
+                .UseAuthentication()
+                .UseMvc();
 
             // app.UseHttpsRedirection();
+            // app.UseEndpointRouting();
 
-            app.UseEndpointRouting();
-            app.UseAuthentication();
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "MovieSearch API V1"));
+            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/moviesearch/swagger.json", "Movie Search API V1"));
         }
     }
 }

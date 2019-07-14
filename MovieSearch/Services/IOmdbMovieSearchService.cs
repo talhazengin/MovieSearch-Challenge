@@ -3,8 +3,8 @@ using MovieSearch.Data.Models.Movie;
 
 namespace MovieSearch.Services
 {
-    public interface IOmdbMovieService
+    public interface IOmdbMovieSearchService
     {
-        Task<Movie> SearchByTitle(string title);
+        Task<MovieInfoModel> SearchByTitle(string title);
     }
 }

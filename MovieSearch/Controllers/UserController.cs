@@ -5,14 +5,13 @@ using MovieSearch.Core.Services;
 using MovieSearch.Data.Models.User;
 using MovieSearch.Data.QueryProcessors;
 using MovieSearch.Filters;
-using MovieSearch.Services;
 
 namespace MovieSearch.Controllers
 {
-    [AllowAnonymous]
-    [Route("moviesearch/[controller]")]
     [ApiController]
-    public class UserController : Controller
+    [AllowAnonymous]
+    [Route("[controller]")]
+    public class UserController : ControllerBase
     {
         private readonly IUserAuthService _userAuthService;
         private readonly IUserQueryProcessor _userQueryProcessor;
@@ -23,18 +22,18 @@ namespace MovieSearch.Controllers
             _userQueryProcessor = userQueryProcessor;
         }
 
-        [HttpPost("create")]
         [ValidateModel]
+        [HttpPost("Create")]
         public async Task CreateUser([FromBody]UserModel userModel)
         {
             await _userQueryProcessor.CreateUser(userModel);
         }
 
-        [HttpPost("authenticate")]
         [ValidateModel]
-        public IActionResult AuthenticateUser([FromBody]UserModel userModel)
+        [HttpPost("Authenticate")]
+        public async Task<IActionResult> AuthenticateUser([FromBody]UserModel userModel)
         {
-            string token = _userAuthService.AuthenticateUser(userModel.Username, userModel.Password);
+            string token = await _userAuthService.AuthenticateUser(userModel.Username, userModel.Password);
 
             if (token == null)
             {

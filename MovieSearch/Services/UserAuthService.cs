@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using MovieSearch.Core.Services;
 using MovieSearch.Data.Models.User;
@@ -23,27 +24,30 @@ namespace MovieSearch.Services
             _userQueryProcessor = userQueryProcessor;
         }
 
-        public string AuthenticateUser(string username, string password)
+        public Task<string> AuthenticateUser(string username, string password)
         {
-            User user = _userQueryProcessor.GetAllUsers().FirstOrDefault(u => u.Username == username && u.Password == password);
-
-            // return null if user not found.
-            if (user == null)
+            return Task.Run(() =>
             {
-                return null;
-            }
+                User user = _userQueryProcessor.GetAllUsers().FirstOrDefault(u => u.Username == username && u.Password == password);
 
-            // authentication successful so generate and return jwt token.
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.Id.ToString()) }),
-                Expires = DateTime.UtcNow.AddMinutes(10),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_jwtKeyByte), SecurityAlgorithms.HmacSha256Signature)
-            };
+                // return null if user not found.
+                if (user == null)
+                {
+                    return null;
+                }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
+                // authentication successful so generate and return jwt token.
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.Id.ToString()) }),
+                    Expires = DateTime.UtcNow.AddMinutes(10),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_jwtKeyByte), SecurityAlgorithms.HmacSha256Signature)
+                };
 
-            return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
+                var tokenHandler = new JwtSecurityTokenHandler();
+
+                return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
+            });
         }
 
         public bool ValidateJwtToken(string jwtTokenString)
