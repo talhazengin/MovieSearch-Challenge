@@ -16,11 +16,11 @@ Microsoft Sql (with Entity Framework) -> Ok\
 Dependency	Injection -> Ok\
 Log -> Some ok\
 Authentication -> Some ok\
-10 minute data update issue -> Ok\
+10 minute data update issue -> Ok
 
 # *** Some Bonus jobs are done. ***
 Using .Net Core Framework -> Ok\
-Using React	or Angular.js in frontend. -> Ok\
+Using React	or Angular.js in frontend. -> Ok
 
 # *** What's missing? ***
 -> I had a firewall issue while using redis. So used Microsoft built-in.\
@@ -29,8 +29,8 @@ Using React	or Angular.js in frontend. -> Ok\
 
 -> Authentication is missing when using Movie Search,\
 the project is working "like authentication" for now.\
-It didn't finish because of time problem.\
+It didn't finish because of time problem.
 
 -> Clear all cache is missing need to find a solution\
 when using built-in Microsoft cache,\
-because IDistributedCache does not have a clear method.\
+because IDistributedCache does not have a clear method.
