@@ -25,7 +25,7 @@ Using React	or Angular.js in frontend. -> Ok
 # *** What's missing? ***
 -> I had a firewall issue while using redis. So used Microsoft built-in.\
 -> For logs, i used a file logging with Serilog not mongodb.\
--> Loosely coupled omdb api is missing. It didn't finish because of time problem.\
+-> Loosely coupled omdb api is missing. It didn't finish because of time problem.
 
 -> Authentication is missing when using Movie Search,\
 the project is working "like authentication" for now.\
