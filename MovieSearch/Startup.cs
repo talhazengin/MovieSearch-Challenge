@@ -1,15 +1,15 @@
 ﻿using System;
-using System.ComponentModel;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Microsoft.Extensions.Logging;
+using MovieSearch.Core.Services;
 using MovieSearch.Filters;
-using MovieSearch.Services;
 using Newtonsoft.Json;
+using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace MovieSearch
@@ -27,6 +27,7 @@ namespace MovieSearch
 
         public Startup(IConfiguration configuration)
         {
+            Log.Logger = new LoggerConfiguration().WriteTo.File("log.txt").CreateLogger();
             Configuration = configuration;
         }
 
@@ -59,8 +60,10 @@ namespace MovieSearch
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddSerilog();
+
             app.UseHsts()
                 .UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
                 .UseAuthentication()

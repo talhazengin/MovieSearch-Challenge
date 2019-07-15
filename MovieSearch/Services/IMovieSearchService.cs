@@ -3,7 +3,7 @@ using MovieSearch.Data.Models.Movie;
 
 namespace MovieSearch.Services
 {
-    public interface IOmdbMovieSearchService
+    public interface IMovieSearchService
     {
         Task<MovieInfoModel> SearchByTitle(string title, bool lookForDbFirst);
 

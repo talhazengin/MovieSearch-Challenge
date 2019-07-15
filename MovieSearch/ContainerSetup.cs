@@ -25,7 +25,7 @@ namespace MovieSearch
             services.AddDbContext<MovieSearchDbContext>(builder => builder.UseInMemoryDatabase("InMemoryDb"), ServiceLifetime.Transient, ServiceLifetime.Transient);
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserAuthService, UserAuthService>();
-            services.AddTransient<IOmdbMovieSearchService, OmdbMovieSearchService>();
+            services.AddTransient<IMovieSearchService, MovieSearchService>();
             services.AddSingleton<IMovieDbUpdateService, MovieDbUpdateService>();
         }
 

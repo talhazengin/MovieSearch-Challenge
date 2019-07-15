@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MovieSearch.Core.Services;
 using MovieSearch.Data.Models.User;
@@ -18,10 +19,12 @@ namespace MovieSearch.Services
         private readonly byte[] _jwtKeyByte = Encoding.ASCII.GetBytes(JwtKeyString);
 
         private readonly IUserQueryProcessor _userQueryProcessor;
+        private readonly ILogger<UserAuthService> _logger;
 
-        public UserAuthService(IUserQueryProcessor userQueryProcessor)
+        public UserAuthService(IUserQueryProcessor userQueryProcessor, ILogger<UserAuthService> logger)
         {
             _userQueryProcessor = userQueryProcessor;
+            _logger = logger;
         }
 
         public Task<string> AuthenticateUser(string username, string password)
@@ -68,7 +71,7 @@ namespace MovieSearch.Services
             }
             catch (Exception e)
             {
-                //TODO:LOG EXCEPTION
+                _logger.LogError(e, "Got an error while validating Jwt Token!");
                 return false;
             }
         }

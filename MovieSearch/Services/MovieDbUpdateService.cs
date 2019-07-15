@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using MovieSearch.Core.Services;
 using MovieSearch.Data.Models.Movie;
 using MovieSearch.Data.QueryProcessors;
 
@@ -8,13 +10,15 @@ namespace MovieSearch.Services
 {
     public class MovieDbUpdateService : IMovieDbUpdateService
     {
-        private readonly IOmdbMovieSearchService _omdbMovieSearchService;
+        private readonly IMovieSearchService _movieSearchService;
         private readonly IMovieInfoQueryProcessor _movieInfoQueryProcessor;
+        private readonly ILogger<MovieDbUpdateService> _logger;
 
-        public MovieDbUpdateService(IOmdbMovieSearchService omdbMovieSearchService, IMovieInfoQueryProcessor movieInfoQueryProcessor)
+        public MovieDbUpdateService(IMovieSearchService movieSearchService, IMovieInfoQueryProcessor movieInfoQueryProcessor, ILogger<MovieDbUpdateService> logger)
         {
-            _omdbMovieSearchService = omdbMovieSearchService;
+            _movieSearchService = movieSearchService;
             _movieInfoQueryProcessor = movieInfoQueryProcessor;
+            _logger = logger;
         }
 
         public void StartBackgroundUpdateProcess()
@@ -25,9 +29,9 @@ namespace MovieSearch.Services
                 {
                     UpdateMovieDatabase();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // TODO: LOG
+                    _logger.LogError(e, "Updating movie database error!");
                 }
 
                 await Task.Delay(TimeSpan.FromMinutes(10));
@@ -39,8 +43,9 @@ namespace MovieSearch.Services
         {
             foreach (MovieInfo movieInfo in _movieInfoQueryProcessor.GetAllMovieInfos())
             {
-                // This search automatically creates database record. Don't need to write to database explicitly.
-                await _omdbMovieSearchService.SearchByImdbId(movieInfo.ImdbId, false);
+                MovieInfoModel movieInfoModel = await _movieSearchService.SearchByImdbId(movieInfo.ImdbId, false);
+
+                await _movieInfoQueryProcessor.UpdateMovieInfo(movieInfo.Id, movieInfoModel);
             }
         }
     }

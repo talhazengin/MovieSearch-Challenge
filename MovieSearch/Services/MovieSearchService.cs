@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace MovieSearch.Services
 {
-    public class OmdbMovieSearchService : IOmdbMovieSearchService
+    public class MovieSearchService : IMovieSearchService
     {
         private const string OmdbApiAuthKey = "fa904133";
 
@@ -18,7 +18,7 @@ namespace MovieSearch.Services
         private readonly IMovieInfoQueryProcessor _movieInfoQueryProcessor;
         private readonly HttpClient _omdbClient;
 
-        public OmdbMovieSearchService(IMovieInfoQueryProcessor movieInfoQueryProcessor)
+        public MovieSearchService(IMovieInfoQueryProcessor movieInfoQueryProcessor)
         {
             _movieInfoQueryProcessor = movieInfoQueryProcessor;
             _omdbClient = new HttpClient();
@@ -62,9 +62,6 @@ namespace MovieSearch.Services
                 MovieInfoJson = responseMessage
             };
 
-            // Add found movie info to the database.
-            await _movieInfoQueryProcessor.CreateMovieInfo(movieInfoModel);
-
             return movieInfoModel;
         }
 
@@ -105,9 +102,6 @@ namespace MovieSearch.Services
                 Title = json["Title"].Value<string>(),
                 MovieInfoJson = responseMessage
             };
-
-            // Add found movie info to the database.
-            await _movieInfoQueryProcessor.CreateMovieInfo(movieInfoModel);
 
             return movieInfoModel;
         }

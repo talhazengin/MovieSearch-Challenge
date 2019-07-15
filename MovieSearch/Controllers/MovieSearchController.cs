@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using MovieSearch.Data.Models.Movie;
+using MovieSearch.Data.QueryProcessors;
 using MovieSearch.Services;
 
 namespace MovieSearch.Controllers
@@ -12,13 +13,15 @@ namespace MovieSearch.Controllers
     public class MovieSearchController : ControllerBase
     {
         private readonly IDistributedCache _distributedCache;
-        private readonly IOmdbMovieSearchService _omdbMovieSearchService;
+        private readonly IMovieSearchService _movieSearchService;
+        private readonly IMovieInfoQueryProcessor _movieInfoQueryProcessor;
         private readonly DistributedCacheEntryOptions _distributedCacheEntryOptions;
 
-        public MovieSearchController(IDistributedCache distributedCache, IOmdbMovieSearchService omdbMovieSearchService)
+        public MovieSearchController(IDistributedCache distributedCache, IMovieSearchService movieSearchService, IMovieInfoQueryProcessor movieInfoQueryProcessor)
         {
             _distributedCache = distributedCache;
-            _omdbMovieSearchService = omdbMovieSearchService;
+            _movieSearchService = movieSearchService;
+            _movieInfoQueryProcessor = movieInfoQueryProcessor;
 
             _distributedCacheEntryOptions = new DistributedCacheEntryOptions
             {
@@ -36,10 +39,13 @@ namespace MovieSearch.Controllers
                 return movieInfoModel;
             }
 
-            movieInfoModel = await _omdbMovieSearchService.SearchByTitle(title, true);
+            movieInfoModel = await _movieSearchService.SearchByTitle(title, true);
 
             await _distributedCache.SetAsync(movieInfoModel.ImdbId, movieInfoModel, _distributedCacheEntryOptions);
             await _distributedCache.SetAsync(movieInfoModel.Title, movieInfoModel, _distributedCacheEntryOptions);
+
+            // Add found movie info to the database.
+            await _movieInfoQueryProcessor.CreateMovieInfo(movieInfoModel);
 
             return movieInfoModel;
         }
@@ -54,10 +60,13 @@ namespace MovieSearch.Controllers
                 return movieInfoModel;
             }
 
-            movieInfoModel = await _omdbMovieSearchService.SearchByImdbId(imdbId, true);
+            movieInfoModel = await _movieSearchService.SearchByImdbId(imdbId, true);
 
             await _distributedCache.SetAsync(movieInfoModel.ImdbId, movieInfoModel, _distributedCacheEntryOptions);
             await _distributedCache.SetAsync(movieInfoModel.Title, movieInfoModel, _distributedCacheEntryOptions);
+
+            // Add found movie info to the database.
+            await _movieInfoQueryProcessor.CreateMovieInfo(movieInfoModel);
 
             return movieInfoModel;
         }

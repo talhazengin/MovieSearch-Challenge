@@ -55,9 +55,20 @@ namespace MovieSearch.Data.QueryProcessors
             await _unitOfWork.CommitAsync();
         }
 
-        public Task UpdateMovieInfo(int id, MovieInfoModel movieInfoModel)
+        public async Task UpdateMovieInfo(int id, MovieInfoModel movieInfoModel)
         {
-            throw new System.NotImplementedException();
+            MovieInfo movieInfo = GetAllMovieInfos().FirstOrDefault(info => info.Id == id);
+
+            if (movieInfo == null)
+            {
+                throw new NotFoundException("MovieInfo not found!");
+            }
+
+            movieInfo.ImdbId = movieInfoModel.ImdbId;
+            movieInfo.Title = movieInfoModel.Title;
+            movieInfo.MovieInfoJson = movieInfoModel.MovieInfoJson;
+
+            await _unitOfWork.CommitAsync();
         }
 
         public Task DeleteMovieInfo(int id)
