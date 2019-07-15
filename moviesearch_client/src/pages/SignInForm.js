@@ -27,6 +27,26 @@ class SignInForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
+        fetch('http://localhost:5000/user/authenticate', {
+          method: 'POST',
+          mode: 'cors', // defaults to same-origin
+          headers: {
+            'Content-Type': 'application/json',
+            'content-length': '50',
+            'Accept': '*/*'
+          },
+          body: JSON.stringify({
+            Username: this.state.username,
+            Password: this.state.password
+          })}).then(res => {
+            if (res.ok) {
+              alert('Succesfully authenticated..')
+              this.props.history.push("/search");
+            }else{
+              alert('Failed to authenticate!')
+            }
+          }).catch(error => alert('Failed to signed up!'));
+
         console.log('The form was submitted with the following data:');
         console.log(this.state);
     }
@@ -34,7 +54,7 @@ class SignInForm extends Component {
     render() {
         return (
         <div className="FormCenter">
-            <form onSubmit={this.handleSubmit} className="FormFields" onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} className="FormFields">
               <div className="FormField">
                 <label className="FormField__Label" htmlFor="name">Username</label>
                 <input type="text" id="username" className="FormField__Input" placeholder="Enter your username" name="username" value={this.state.name} onChange={this.handleChange} />

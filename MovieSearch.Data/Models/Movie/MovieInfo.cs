@@ -8,6 +8,6 @@
 
         public string ImdbId { get; set; }
 
-        public string AllMovieInfoJson { get; set; }
+        public string MovieInfoJson { get; set; }
     }
 }

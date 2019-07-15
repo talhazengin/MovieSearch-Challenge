@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace MovieSearch.Data.Models.User
 {
+    [Serializable]
     public class UserModel
     {
         [Required]

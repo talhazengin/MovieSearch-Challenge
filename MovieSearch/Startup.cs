@@ -42,7 +42,12 @@ namespace MovieSearch
                     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
                 });
 
-            // Register the Swagger generator, defining one or more Swagger documents
+            // I used Redis cache but i encountered with firewall
+            // problems when Redis connection on windows.
+            // For this reason i am using distributed memory caching for this project.
+            services.AddDistributedMemoryCache();
+
+            // Register the Swagger generator, defining one or more Swagger documents.
             services.AddSwaggerGen(options => 
                 options.SwaggerDoc("moviesearch", new Info { Title = "Movie Search", Version = "v1" }));
 
@@ -57,12 +62,10 @@ namespace MovieSearch
                 .UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
                 .UseAuthentication()
                 .UseMvc();
-                
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
+            // Enable middleware to serve generated Swagger as a JSON endpoint and swagger-ui (HTML, JS, CSS, etc.)
+            // Specifying the Swagger JSON endpoint.
+            app.UseSwagger();
             app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/moviesearch/swagger.json", "Movie Search API V1"));
         }
     }

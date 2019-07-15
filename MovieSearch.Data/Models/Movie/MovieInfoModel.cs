@@ -1,5 +1,8 @@
-﻿namespace MovieSearch.Data.Models.Movie
+﻿using System;
+
+namespace MovieSearch.Data.Models.Movie
 {
+    [Serializable]
     public class MovieInfoModel
     {
         public string Title { get; set; }

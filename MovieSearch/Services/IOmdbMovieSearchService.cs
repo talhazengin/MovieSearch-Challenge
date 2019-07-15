@@ -6,5 +6,7 @@ namespace MovieSearch.Services
     public interface IOmdbMovieSearchService
     {
         Task<MovieInfoModel> SearchByTitle(string title);
+
+        Task<MovieInfoModel> SearchByImdbId(string imdbId);
     }
 }

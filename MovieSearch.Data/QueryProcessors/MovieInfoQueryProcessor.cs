@@ -47,7 +47,7 @@ namespace MovieSearch.Data.QueryProcessors
             {
                 ImdbId = movieInfoModel.ImdbId,
                 Title = movieInfoModel.Title,
-                AllMovieInfoJson = movieInfoModel.MovieInfoJson
+                MovieInfoJson = movieInfoModel.MovieInfoJson
             };
 
             _unitOfWork.Add(movieInfo);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MovieSearch.Core.Exceptions;
@@ -25,6 +26,20 @@ namespace MovieSearch.Services
 
         public async Task<MovieInfoModel> SearchByTitle(string title)
         {
+            // Search in database.
+            MovieInfo movieInfo = await Task.Run(() => _movieInfoQueryProcessor.GetAllMovieInfos().FirstOrDefault(info => info.Title == title));
+
+            if (movieInfo != null)
+            {
+                return new MovieInfoModel
+                {
+                    Title = movieInfo.Title,
+                    ImdbId = movieInfo.ImdbId,
+                    MovieInfoJson = movieInfo.MovieInfoJson
+                };
+            }
+
+            // Search in omdb api.
             var requestUri = new Uri(OmdbApiEndPointUri, $"?apikey={OmdbApiAuthKey}&t={title}");
 
             string responseMessage = await _omdbClient.GetStringAsync(requestUri);
@@ -51,6 +66,20 @@ namespace MovieSearch.Services
 
         public async Task<MovieInfoModel> SearchByImdbId(string imdbId)
         {
+            // Search in database.
+            MovieInfo movieInfo = await Task.Run(() => _movieInfoQueryProcessor.GetAllMovieInfos().FirstOrDefault(info => info.ImdbId == imdbId));
+
+            if (movieInfo != null)
+            {
+                return new MovieInfoModel
+                {
+                    Title = movieInfo.Title,
+                    ImdbId = movieInfo.ImdbId,
+                    MovieInfoJson = movieInfo.MovieInfoJson
+                };
+            }
+
+            // Search in omdb api.
             var requestUri = new Uri(OmdbApiEndPointUri, $"?apikey={OmdbApiAuthKey}&i={imdbId}");
 
             string responseMessage = await _omdbClient.GetStringAsync(requestUri);

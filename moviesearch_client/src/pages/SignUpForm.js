@@ -42,6 +42,7 @@ class SignUpForm extends Component {
           })}).then(res => {
             if (res.ok) {
               alert('Succesfully signed up..')
+              this.props.history.push("/sign-in");
             }else{
               alert('Failed to signed up!')
             }
