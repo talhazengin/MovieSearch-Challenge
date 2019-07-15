@@ -5,12 +5,12 @@ First of all, i have to say this.
 I didn't have much time. I entertained my guests at the weekend.
 
 # *** How to run project? ***
-dotnet run -> in MovieSearch directory.
+dotnet run -> in MovieSearch directory.\
 npm start -> in moviesearch_client directory.
 
 # *** These jobs are done. ***
-Service	Oriented Architecture -> Ok
-Asp.Net	Web	API -> Ok
+Service	Oriented Architecture -> Ok\
+Asp.Net	Web	API -> Ok\
 Microsoft Sql (with Entity Framework) -> Ok
 12 Minute Cache -> Ok
 Dependency	Injection -> Ok
