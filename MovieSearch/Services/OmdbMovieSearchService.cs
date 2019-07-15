@@ -24,19 +24,23 @@ namespace MovieSearch.Services
             _omdbClient = new HttpClient();
         }
 
-        public async Task<MovieInfoModel> SearchByTitle(string title)
+        public async Task<MovieInfoModel> SearchByTitle(string title, bool lookForDbFirst)
         {
-            // Search in database.
-            MovieInfo movieInfo = await Task.Run(() => _movieInfoQueryProcessor.GetAllMovieInfos().FirstOrDefault(info => info.Title == title));
-
-            if (movieInfo != null)
+            if (lookForDbFirst)
             {
-                return new MovieInfoModel
+                // Search in database.
+                MovieInfo movieInfo = await Task.Run(() => 
+                    _movieInfoQueryProcessor.GetAllMovieInfos().FirstOrDefault(info => info.Title == title));
+
+                if (movieInfo != null)
                 {
-                    Title = movieInfo.Title,
-                    ImdbId = movieInfo.ImdbId,
-                    MovieInfoJson = movieInfo.MovieInfoJson
-                };
+                    return new MovieInfoModel
+                    {
+                        Title = movieInfo.Title,
+                        ImdbId = movieInfo.ImdbId,
+                        MovieInfoJson = movieInfo.MovieInfoJson
+                    };
+                }
             }
 
             // Search in omdb api.
@@ -64,19 +68,23 @@ namespace MovieSearch.Services
             return movieInfoModel;
         }
 
-        public async Task<MovieInfoModel> SearchByImdbId(string imdbId)
+        public async Task<MovieInfoModel> SearchByImdbId(string imdbId, bool lookForDbFirst)
         {
-            // Search in database.
-            MovieInfo movieInfo = await Task.Run(() => _movieInfoQueryProcessor.GetAllMovieInfos().FirstOrDefault(info => info.ImdbId == imdbId));
-
-            if (movieInfo != null)
+            if (lookForDbFirst)
             {
-                return new MovieInfoModel
+                // Search in database.
+                MovieInfo movieInfo = await Task.Run(() => 
+                    _movieInfoQueryProcessor.GetAllMovieInfos().FirstOrDefault(info => info.ImdbId == imdbId));
+
+                if (movieInfo != null)
                 {
-                    Title = movieInfo.Title,
-                    ImdbId = movieInfo.ImdbId,
-                    MovieInfoJson = movieInfo.MovieInfoJson
-                };
+                    return new MovieInfoModel
+                    {
+                        Title = movieInfo.Title,
+                        ImdbId = movieInfo.ImdbId,
+                        MovieInfoJson = movieInfo.MovieInfoJson
+                    };
+                }
             }
 
             // Search in omdb api.

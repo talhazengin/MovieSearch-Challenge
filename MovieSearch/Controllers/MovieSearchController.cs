@@ -36,7 +36,7 @@ namespace MovieSearch.Controllers
                 return movieInfoModel;
             }
 
-            movieInfoModel = await _omdbMovieSearchService.SearchByTitle(title);
+            movieInfoModel = await _omdbMovieSearchService.SearchByTitle(title, true);
 
             await _distributedCache.SetAsync(movieInfoModel.ImdbId, movieInfoModel, _distributedCacheEntryOptions);
             await _distributedCache.SetAsync(movieInfoModel.Title, movieInfoModel, _distributedCacheEntryOptions);
@@ -54,7 +54,7 @@ namespace MovieSearch.Controllers
                 return movieInfoModel;
             }
 
-            movieInfoModel = await _omdbMovieSearchService.SearchByImdbId(imdbId);
+            movieInfoModel = await _omdbMovieSearchService.SearchByImdbId(imdbId, true);
 
             await _distributedCache.SetAsync(movieInfoModel.ImdbId, movieInfoModel, _distributedCacheEntryOptions);
             await _distributedCache.SetAsync(movieInfoModel.Title, movieInfoModel, _distributedCacheEntryOptions);

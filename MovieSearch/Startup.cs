@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using System.ComponentModel;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using MovieSearch.Filters;
+using MovieSearch.Services;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -56,7 +59,7 @@ namespace MovieSearch
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
         {
             app.UseHsts()
                 .UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
@@ -67,6 +70,10 @@ namespace MovieSearch
             // Specifying the Swagger JSON endpoint.
             app.UseSwagger();
             app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/moviesearch/swagger.json", "Movie Search API V1"));
+
+            // We are starting a background process, will be running all the life of the program
+            // and updates the movie database periodically every 10 minutes.
+            serviceProvider.GetService<IMovieDbUpdateService>().StartBackgroundUpdateProcess();
         }
     }
 }

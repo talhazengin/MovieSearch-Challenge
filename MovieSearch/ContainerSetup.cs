@@ -22,10 +22,11 @@ namespace MovieSearch
         private static void AddUnitOfWork(IServiceCollection services)
         {
             // We are using in memory database for this demo project.
-            services.AddDbContext<MovieSearchDbContext>(builder => builder.UseInMemoryDatabase("InMemoryDb"));
-            services.AddScoped<IUnitOfWork>(provider => new UnitOfWork(provider.GetRequiredService<MovieSearchDbContext>()));
-            services.AddScoped<IUserAuthService, UserAuthService>();
-            services.AddScoped<IOmdbMovieSearchService, OmdbMovieSearchService>();
+            services.AddDbContext<MovieSearchDbContext>(builder => builder.UseInMemoryDatabase("InMemoryDb"), ServiceLifetime.Transient, ServiceLifetime.Transient);
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUserAuthService, UserAuthService>();
+            services.AddTransient<IOmdbMovieSearchService, OmdbMovieSearchService>();
+            services.AddSingleton<IMovieDbUpdateService, MovieDbUpdateService>();
         }
 
         private static void AddQueryProcessors(IServiceCollection services)
@@ -40,7 +41,7 @@ namespace MovieSearch
             foreach (Type processorType in processorTypes)
             {
                 Type interfaceQ = processorType.GetInterfaces().First();
-                services.AddScoped(interfaceQ, processorType);
+                services.AddTransient(interfaceQ, processorType);
             }
         }
     }
